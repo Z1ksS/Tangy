@@ -1,0 +1,63 @@
+﻿@page "/productslist"
+@using Tangy_Models
+<h2 class="text-primary">DemoProductsList</h2>
+
+<div class="border p-2">
+	<div class="row">
+		@foreach(var prod in Products)
+		{
+			<div class="bg-light border p-2 col-5">
+				<h4 class="text-secondary">Product - @prod.Id</h4>
+				<p>
+					Name - @prod.Name
+				</p>
+				<label for="showProperties">Show properties</label>
+				<input type="checkbox" @bind-value="prod.IsActive" checked="@(prod.IsActive ? "checked" : null)"/>
+
+				@if (prod.IsActive)
+				{
+					@foreach(var propProp in prod.ProductProperties)
+					{
+						<p>@propProp.Key - @propProp.Value</p>
+					}
+				}
+			</div>
+		}
+	</div>
+</div>
+
+@code {
+	List<TestProduct> Products = new();
+
+	protected override void OnInitialized()
+	{
+		Products.Add(new()
+			{
+				Id = 1,
+				Name = "Midnight Blaze",
+				IsActive = false,
+
+				Price = 10.99,
+				ProductProperties = new()
+				{
+					new TestProductProp { Id = 1, Key = "Flavor", Value = "Rose"},
+					new TestProductProp { Id = 2, Key = "Size", Value = "20oz"},
+					new TestProductProp { Id = 3, Key = "Color", Value="Purple" }
+				}
+			});
+
+		Products.Add(new()
+			{
+				Id = 2,
+				Name = "Blossom Lily",
+				IsActive = true,
+				Price = 13.99,
+				ProductProperties = new()
+				{
+					new TestProductProp { Id = 1, Key = "Flavor", Value = "Lily" },
+					new TestProductProp { Id = 2, Key = "Size", Value = "18oz" },
+					new TestProductProp {Id = 3,Key = "Color",Value = "White"}
+				}
+			});
+	}
+}
